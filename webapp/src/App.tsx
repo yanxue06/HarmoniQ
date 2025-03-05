@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import SpotifyAuth from './components/SpotifyAuth';
+import SpotifyData from './components/SpotifyData';
 import { Session } from '@supabase/supabase-js';
 import './App.css';
 
@@ -37,6 +38,8 @@ function App() {
             <p>You're now connected to Spotify.</p>
           </div>
         )}
+        
+        <SpotifyData isLoggedIn={!!session} />
       </main>
 
       <footer className="app-footer">

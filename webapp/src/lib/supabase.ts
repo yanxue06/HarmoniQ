@@ -108,7 +108,10 @@ const _signInWithSpotify = async (redirectUrl?: string) => {
   console.log('Calling Supabase signInWithSpotify');
   const options = {
     provider: 'spotify' as Provider,
-    options: redirectUrl ? { redirectTo: redirectUrl } : undefined
+    options: {
+      redirectTo: redirectUrl,
+      scopes: 'user-read-email user-read-private user-top-read user-read-recently-played user-read-currently-playing playlist-read-private'
+    }
   };
   
   return supabase.auth.signInWithOAuth(options);

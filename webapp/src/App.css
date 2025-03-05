@@ -43,6 +43,10 @@
   color: #333;
 }
 
+.welcome-message p {
+  color: #333;
+}
+
 .app-footer {
   margin-top: 60px;
   text-align: center;

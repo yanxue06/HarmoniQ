@@ -1,0 +1,152 @@
+.spotify-data-container {
+  background-color: #121212;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  color: white;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.spotify-data-container h2 {
+  color: #1DB954;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.error-message {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #ff4d4d;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #b3b3b3;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tabs button:hover {
+  color: white;
+}
+
+.tabs button.active {
+  color: #1DB954;
+}
+
+.tabs button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1DB954;
+}
+
+.content {
+  margin-top: 20px;
+}
+
+.tracks-list ul,
+.artists-list ul,
+.recent-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.track-item,
+.artist-item,
+.recent-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #181818;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.track-item:hover,
+.artist-item:hover,
+.recent-item:hover {
+  background-color: #282828;
+}
+
+.track-image,
+.artist-image,
+.recent-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.artist-image {
+  border-radius: 50%;
+}
+
+.track-info,
+.artist-info,
+.recent-info {
+  flex: 1;
+}
+
+.track-name,
+.artist-name,
+.recent-name {
+  font-weight: bold;
+  margin: 0 0 5px 0;
+}
+
+.track-artist,
+.artist-genres,
+.recent-artist {
+  color: #b3b3b3;
+  font-size: 14px;
+  margin: 0;
+}
+
+.recent-time {
+  color: #b3b3b3;
+  font-size: 12px;
+  margin: 5px 0 0 0;
+}
+
+.refresh-button {
+  display: block;
+  margin: 20px auto 0;
+  background-color: #1DB954;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.refresh-button:hover {
+  background-color: #1ed760;
+} 
