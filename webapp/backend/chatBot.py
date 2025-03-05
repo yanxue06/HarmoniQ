@@ -9,7 +9,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 client = genai.configure(api_key=GEMINI_API_KEY)
 
 model = genai.GenerativeModel("gemini-2.0-flash")
-response = model.generate_content("Explain how AI works")
+response = model.generate_content("Explain Music Theory")
 
 
 print(response.text)
