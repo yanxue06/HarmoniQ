@@ -47,6 +47,14 @@
   color: #333;
 }
 
+.social-features {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+  margin-top: 30px;
+}
+
 .app-footer {
   margin-top: 60px;
   text-align: center;
@@ -66,5 +74,16 @@
   
   .welcome-message {
     padding: 15px;
+  }
+}
+
+@media (min-width: 992px) {
+  .social-features {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  
+  .social-features > * {
+    flex: 1;
   }
 }

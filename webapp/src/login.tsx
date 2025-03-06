@@ -2,6 +2,8 @@ import { useState } from 'react';
 import SpotifyAuth from './components/SpotifyAuth';
 import SpotifyData from './components/SpotifyData';
 import { Session } from '@supabase/supabase-js';
+import Messaging from './components/Messaging';
+import ConnectionsManager from './components/ConnectionsManager';
 import './App.css';
 
 function Login() {
@@ -33,15 +35,22 @@ function Login() {
         />
 
         {session && (
-          <div className="welcome-message">
-            <h2>Welcome, {session.user.user_metadata.name || 'Music Lover'}!</h2>
-            <p>You're now connected to Spotify.</p>
-          </div>
+          <>
+            <div className="welcome-message">
+              <h2>Welcome, {session.user.user_metadata.name || 'Music Lover'}!</h2>
+              <p>You're now connected to Spotify.</p>
+            </div>
+            
+            <SpotifyData isLoggedIn={!!session} />
+            
+            <div className="social-features">
+              <ConnectionsManager session={session} />
+              <Messaging session={session} />
+            </div>
+          </>
         )}
-        
-        <SpotifyData isLoggedIn={!!session} />
       </main>
-
+      
       <footer className="app-footer">
         <p>&copy; {new Date().getFullYear()} HarmoniQ. All rights reserved.</p>
       </footer>
