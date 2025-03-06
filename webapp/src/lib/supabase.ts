@@ -1,11 +1,8 @@
 import { createClient, Provider } from '@supabase/supabase-js';
 
-
 // Try to get values from environment variables, fall back to hardcoded values
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-
-console.log('Supabase URL being used:', supabaseUrl); // Debug log
 
 // Create a single Supabase client instance
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

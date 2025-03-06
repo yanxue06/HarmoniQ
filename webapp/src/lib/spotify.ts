@@ -19,7 +19,8 @@ const spotifyFetch = async (endpoint: string, method: string = 'GET', body?: any
     throw new Error('No Spotify access token available. User may need to log in again.');
   }
   
-  console.log(`Using token: ${token.substring(0, 10)}...`);
+  // Don't log tokens to console
+  console.log('Using Spotify access token');
   
   try {
     const response = await fetch(`${SPOTIFY_BASE_URL}${endpoint}`, {
