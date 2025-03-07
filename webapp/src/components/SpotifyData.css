@@ -1,0 +1,140 @@
+/* SpotifyData.css */
+.spotify-data-container {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.error-message {
+  color: #ff4444;
+  margin-bottom: 1rem;
+}
+
+.loading {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tabs button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.tabs button.active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.content {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: 60vh; /* Allow scrolling if content overflows */
+}
+
+.tracks-list ul,
+.artists-list ul,
+.recent-list ul,
+.albums-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.track-item,
+.artist-item,
+.recent-item,
+.album-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.track-image,
+.artist-image,
+.recent-image,
+.album-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 1rem;
+  border-radius: 4px;
+}
+
+.track-info,
+.artist-info,
+.recent-info,
+.album-info {
+  text-align: left;
+}
+
+.track-name,
+.artist-name,
+.recent-name,
+.album-name {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.track-artist,
+.artist-genres,
+.recent-artist,
+.recent-time,
+.album-artist {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin: 0;
+}
+
+.refresh-button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+.refresh-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .spotify-data-container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+
+  .track-item,
+  .artist-item,
+  .recent-item,
+  .album-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .track-image,
+  .artist-image,
+  .recent-image,
+  .album-image {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+}
