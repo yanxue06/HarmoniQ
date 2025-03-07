@@ -75,20 +75,29 @@ const Messaging = ({ session }: MessagingProps) => {
 
   // Fetch messages when a connection is selected
   useEffect(() => {
-    if (!session || !selectedConnection || !selectedConnection.other_user) return;
+    if (!session || !selectedConnection || !selectedConnection.other_user) {
+      setMessages([]);
+      return;
+    }
 
     const fetchMessages = async () => {
       try {
         setLoading(true);
+        setError(null);
+        
+        if (!selectedConnection.other_user.user_id) {
+          throw new Error('Selected connection has no user ID');
+        }
+
         const messages = await getMessages(
-          session.user.id, 
+          session.user.id,
           selectedConnection.other_user.user_id
         );
         setMessages(messages);
 
         // Mark messages as read
         const unreadMessages = messages.filter(
-          msg => msg.receiver_id === session.user.id && !msg.read
+          msg => msg.receiver_uid === session.user.id && !msg.read
         );
 
         if (unreadMessages.length > 0) {
@@ -109,14 +118,14 @@ const Messaging = ({ session }: MessagingProps) => {
       // Only add the message if it's relevant to the current conversation
       if (
         selectedConnection.other_user && (
-          newMsg.sender_id === selectedConnection.other_user.user_id || 
-          newMsg.receiver_id === selectedConnection.other_user.user_id
+          newMsg.sender_uid === selectedConnection.other_user.user_id || 
+          newMsg.receiver_uid === selectedConnection.other_user.user_id
         )
       ) {
         setMessages(prev => [...prev, newMsg]);
         
         // Mark as read immediately if we're in this conversation
-        if (newMsg.receiver_id === session.user.id) {
+        if (newMsg.receiver_uid === session.user.id) {
           markMessagesAsRead([newMsg.id as string]);
         }
       }
@@ -139,8 +148,8 @@ const Messaging = ({ session }: MessagingProps) => {
     
     try {
       await sendMessage({
-        sender_id: session.user.id,
-        receiver_id: selectedConnection.other_user.user_id,
+        sender_uid: session.user.id,
+        receiver_uid: selectedConnection.other_user.user_id,
         content: newMessage,
         created_at: new Date().toISOString()
       });
@@ -206,7 +215,7 @@ const Messaging = ({ session }: MessagingProps) => {
                   messages.map(message => (
                     <div 
                       key={message.id}
-                      className={`message ${message.sender_id === session.user.id ? 'sent' : 'received'}`}
+                      className={`message ${message.sender_uid === session.user.id ? 'sent' : 'received'}`}
                     >
                       <div className="message-content">
                         <p>{message.content}</p>
