@@ -48,30 +48,34 @@ const ExplorePage: React.FC = () => {
   if (!isLoggedIn) {
     return (
       <div className="page-container">
-        <h1 className="title">HarmoniQ</h1>
-        <p className="slogan">Please log in to continue</p>
+        <div className="intro-container">
+          <h1 className="title">HarmoniQ</h1>
+          <p className="slogan">Please log in to continue</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="page-container">
-      <h1 className="title">HarmoniQ</h1>
-      <p className="slogan">Explore Your Music Journey</p>
+      <div className="intro-container">
+        <h1 className="title">HarmoniQ</h1>
+        <p className="slogan">Explore Your Music Journey</p>
+      </div>
+
+      <div className="spotify-data-container">
+        <SpotifyData isLoggedIn={isLoggedIn} />
+      </div>
+
+      <div className="connections-container">
+        <ConnectionsManager session={session} />
+      </div>
+
+      <div className="messaging-container">
+        <Messaging session={session} />
+      </div>
 
       <div className="welcome-container">
-        <div className="spotify-data-container">
-          <SpotifyData isLoggedIn={isLoggedIn} />
-        </div>
-
-        <div className="connections-section">
-          <ConnectionsManager session={session} />
-        </div>
-
-        <div className="messaging-section">
-          <Messaging session={session} />
-        </div>
-
         <div className="login-form">
           <button
             className="menu-item"

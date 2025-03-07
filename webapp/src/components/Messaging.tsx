@@ -135,12 +135,7 @@ const Messaging = ({ session }: MessagingProps) => {
       subscription.unsubscribe();
     };
   }, [session, selectedConnection]);
-
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
+ 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     

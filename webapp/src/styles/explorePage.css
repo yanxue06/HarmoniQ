@@ -1,87 +1,88 @@
 .page-container {
   min-height: 100vh;
   background-color: #121212;
-  padding: 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+}
+
+.spotify-data-container, 
+.connections-container, 
+.messaging-container {
+  text-align: center;
+  background-color: #1f292c;
+  width: 80%; 
+  margin: 0 auto; 
 }
 
 .title {
-  text-align: center;
   color: #1DB954;
+  font-size: 2.5rem;
   margin-bottom: 10px;
 }
 
 .slogan {
-  text-align: center;
   color: #ffffff;
-  margin-bottom: 30px;
-}
-
-.welcome-container {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Style each major component container */
-.spotify-data-container,
-.connections-container,
-.messaging-container {
-  width: 100%;
-  background-color: #1e1e2f;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 40px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+  margin-bottom: 20px;
 }
 
 /* Login form at the bottom */
+.welcome-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 0;
+}
+
 .login-form {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
 }
 
 .menu-item {
   background-color: #1DB954;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 20px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .menu-item:hover {
   background-color: #1ed760;
+  transform: translateY(-1px);
 }
 
 .menu-item:disabled {
   background-color: #666;
   cursor: not-allowed;
+  transform: none;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .page-container {
     padding: 10px;
-  }
-
-  .welcome-container {
-    gap: 20px;
-    padding: 10px;
+    gap: 15px;
   }
 
   .spotify-data-container,
   .connections-container,
   .messaging-container {
     padding: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .slogan {
+    font-size: 1rem;
   }
 }

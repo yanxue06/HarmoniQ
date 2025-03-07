@@ -1,76 +1,76 @@
 /* Container for both columns */
 .scrolling-bg-outer {
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-
-/* Column 1: bigger */
-.scrolling-column-1 {
-  width: 70%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Column 2: smaller */
-.scrolling-column-2 {
-  width: 30%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Let each column's inner container auto-size to its content */
-.scrolling-column-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  /* We removed 'height: 200%' here! Let it be as tall as images. */
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  box-sizing: border-box;
-}
-
-/* Basic image styling */
-.scrolling-column-inner img {
-  width: 100%;
-  display: block;
-  border: 4px solid #1d1f1dee;
-  background-color: #ccc;
-  box-sizing: border-box;
-  margin: 0;
-}
-
-/* Animations using the CSS variable for the final transform */
-.scrolling-column-inner-1 {
-  animation: scroll-down-col1 50s linear infinite;
-  /* Provide a default fallback if JavaScript not loaded or not measured yet */
-  --scroll-distance: -50%; 
-}
-
-.scrolling-column-inner-2 {
-  animation: scroll-down-col2 15s linear infinite;
-  --scroll-distance: -50%;
-}
-
-@keyframes scroll-down-col1 {
-  100% {
-    transform: translateY(0);
+    width: 100%;
+    height: 100%;
+    display: flex;
   }
-
-  0%{
-    transform: translateY(var(--scroll-distance));
+  
+  /* Column 1: bigger */
+  .scrolling-column-1 {
+    width: 70%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
   }
-}
-
-@keyframes scroll-down-col2 {
-  100% {
-    transform: translateY(0);
+  
+  /* Column 2: smaller */
+  .scrolling-column-2 {
+    width: 30%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
   }
-  0%{
-    transform: translateY(var(--scroll-distance));
+  
+  /* Let each column's inner container auto-size to its content */
+  .scrolling-column-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* We removed 'height: 200%' here! Let it be as tall as images. */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
   }
-}
+  
+  /* Basic image styling */
+  .scrolling-column-inner img {
+    width: 100%;
+    display: block;
+    border: 4px solid #1d1f1dee;
+    background-color: #ccc;
+    box-sizing: border-box;
+    margin: 0;
+  }
+  
+  /* Animations using the CSS variable for the final transform */
+  .scrolling-column-inner-1 {
+    animation: scroll-down-col1 50s linear infinite;
+    /* Provide a default fallback if JavaScript not loaded or not measured yet */
+    --scroll-distance: -50%; 
+  }
+  
+  .scrolling-column-inner-2 {
+    animation: scroll-down-col2 15s linear infinite;
+    --scroll-distance: -50%;
+  }
+  
+  @keyframes scroll-down-col1 {
+    100% {
+      transform: translateY(0);
+    }
+  
+    0%{
+      transform: translateY(var(--scroll-distance));
+    }
+  }
+  
+  @keyframes scroll-down-col2 {
+    100% {
+      transform: translateY(0);
+    }
+    0%{
+      transform: translateY(var(--scroll-distance));
+    }
+  }

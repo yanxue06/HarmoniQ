@@ -1,9 +1,4 @@
-/* SpotifyData.css */
-.spotify-data-container {
-  width: 100%;
-  max-width: 600px;
-  text-align: center;
-}
+
 
 .error-message {
   color: #ff4444;
