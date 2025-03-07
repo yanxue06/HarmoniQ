@@ -74,8 +74,8 @@ const ConnectionsManager = ({ session }: ConnectionsManagerProps) => {
           .limit(10);
         
         if (usersError) throw usersError;
-        
-        // For each user, calculate a mock compatibility score (in a real app, this would be based on music taste)
+
+        // Fix this such that the compatibility score is calculated intelligently
         const usersWithScores = users.map(user => ({
           ...user,
           compatibility_score: Math.floor(Math.random() * 100) // Mock score
