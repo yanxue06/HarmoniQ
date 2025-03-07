@@ -4,7 +4,6 @@
   padding: 20px;
   margin: 20px auto;
   color: white;
-  max-width: 900px;
 }
 
 .messaging-container h2 {
@@ -31,7 +30,6 @@
 
 /* Connections list styles */
 .connections-list {
-  width: 30%;
   background-color: #181818;
   border-right: 1px solid #333;
   overflow-y: auto;

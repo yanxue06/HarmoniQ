@@ -141,27 +141,37 @@ const ConnectionsManager = ({ session }: ConnectionsManagerProps) => {
       // Get all user IDs that the current user is already connected to
       const connectedUserIds = new Set<string>();
       existingConnections.forEach(conn => {
-          if (conn.user_id_1 === session.user.id) {
-              connectedUserIds.add(conn.user_id_2);
-          } else {
-              connectedUserIds.add(conn.user_id_1);
-          }
+        if (conn.user_id_1 === session.user.id) {
+          connectedUserIds.add(conn.user_id_2);
+        } else {
+          connectedUserIds.add(conn.user_id_1);
+        }
       });
+      
+      // Add the current user's ID to exclude from suggestions
+      connectedUserIds.add(session.user.id);
       
       console.log('Connected user IDs:', Array.from(connectedUserIds));
       
-      // Get users who aren't connected to the current user
-      const { data: users, error: usersError } = await supabase
-          .from('user_profiles')
-          .select('*')
-          .not('user_id', 'in', `(${Array.from(connectedUserIds).join(',')})`);
+      let query = supabase
+        .from('user_profiles')
+        .select('*')
+        .neq('user_id', session.user.id);  // Exclude current user
+        
+      // Only add the "not in" filter if there are other connected users
+      if (connectedUserIds.size > 1) {  // > 1 because it includes the current user
+        const connectedArray = Array.from(connectedUserIds);
+        query = query.not('user_id', 'in', `(${connectedArray.join(',')})`);
+      }
+      
+      const { data: users, error: usersError } = await query;
       
       console.log('Fetched suggested users:', users);
       
       if (usersError) throw usersError;
 
       // Add mock compatibility scores for now
-      const usersWithScores = users.map(user => ({
+      const usersWithScores = (users || []).map(user => ({
         ...user,
         compatibility_score: Math.floor(Math.random() * 100) // Mock score
       }));
@@ -261,25 +271,31 @@ const ConnectionsManager = ({ session }: ConnectionsManagerProps) => {
 
   const renderSuggestedUsers = () => (
     <div className="suggested-users">
-      {suggestedUsers.map(user => (
-        <div key={user.user_id} className="user-card">
-          <img 
-            src={user.avatar_url || '/default-avatar.png'} 
-            alt={user.display_name} 
-            className="avatar"
-          />
-          <div className="user-info">
-            <h3>{user.display_name}</h3>
-            <p>Compatibility: {user.compatibility_score}%</p>
+      {loading ? (
+        <p className="loading">Loading suggested users...</p>
+      ) : suggestedUsers.length === 0 ? (
+        <p className="no-data">No suggested users available at the moment</p>
+      ) : (
+        suggestedUsers.map(user => (
+          <div key={user.user_id} className="user-card">
+            <img 
+              src={user.avatar_url || '/default-avatar.png'} 
+              alt={user.display_name} 
+              className="avatar"
+            />
+            <div className="user-info">
+              <h3>{user.display_name}</h3>
+              <p>Compatibility: {user.compatibility_score}%</p>
+            </div>
+            <Button 
+              onClick={() => handleSendRequest(user.user_id)}
+              variant="primary"
+            >
+              Connect
+            </Button>
           </div>
-          <Button 
-            onClick={() => handleSendRequest(user.user_id)}
-            variant="primary"
-          >
-            Connect
-          </Button>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 
