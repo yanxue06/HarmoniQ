@@ -1,3 +1,4 @@
+// SpotifyAuth.tsx
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Session, AuthChangeEvent } from '@supabase/supabase-js';
 import { signInWithSpotify, signOut, getSession, onAuthStateChange } from '../lib/supabase';
@@ -10,32 +11,41 @@ interface SpotifyAuthProps {
 
 const SpotifyAuth = ({ onLogin, onLogout }: SpotifyAuthProps) => {
   const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(false); // Start with false to prevent initial loading state
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isMounted = useRef(true);
   const authListenerRef = useRef<{ subscription: { unsubscribe: () => void } } | null>(null);
   const initialCheckDoneRef = useRef(false);
 
-  // Memoize handlers to prevent recreating functions on each render
   const handleSpotifyLogin = useCallback(async () => {
     try {
+      console.log("Initiating Spotify login...");
       setLoading(true);
       setError(null);
-      
-      // Get the current URL to use as the redirect URL
+
       const redirectUrl = window.location.origin;
-      
+      console.log("Using redirect URL:", redirectUrl);
+
       const { data, error } = await signInWithSpotify(redirectUrl);
-      
+
       if (error) {
         throw error;
       }
-      
-      // The page will redirect to Spotify, so no need to handle the response here
+
+      if (data && data.url) {
+        console.log("Redirecting to Spotify OAuth URL:", data.url);
+        window.location.href = data.url; // Explicitly redirect to the OAuth URL
+      } else {
+        throw new Error("No redirect URL received from Supabase");
+      }
     } catch (err) {
-      console.error('Login error:', err);
+      console.error('Login error details:', err);
       if (isMounted.current) {
-        setError(err instanceof Error ? err.message : 'Failed to login with Spotify');
+        setError(
+          err instanceof Error
+            ? `Failed to login with Spotify: ${err.message}`
+            : 'Failed to login with Spotify due to an unknown error'
+        );
         setLoading(false);
       }
     }
@@ -46,17 +56,16 @@ const SpotifyAuth = ({ onLogin, onLogout }: SpotifyAuthProps) => {
       console.log('Starting logout process');
       setLoading(true);
       const { error } = await signOut();
-      
+
       if (error) {
         console.error('Logout error from Supabase:', error);
         throw error;
       }
-      
+
       console.log('Logout successful, resetting session');
       if (isMounted.current) {
         setSession(null);
       }
-      // We don't need to call onLogout() here as it will be triggered by the auth state change listener
     } catch (err) {
       console.error('Logout error:', err);
       if (isMounted.current) {
@@ -70,27 +79,40 @@ const SpotifyAuth = ({ onLogin, onLogout }: SpotifyAuthProps) => {
     }
   }, []);
 
-  // Setup auth state listener only once
   useEffect(() => {
-    // Set isMounted to true when component mounts
     isMounted.current = true;
-    
-    // Check for an existing session when the component mounts
+
     const checkSession = async () => {
       if (initialCheckDoneRef.current) return;
-      
+
       try {
+        // Check if we're returning from Spotify auth (URL will have code or error params)
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasAuthCode = urlParams.has('code');
+        const hasAuthError = urlParams.has('error');
+        
+        if (hasAuthCode || hasAuthError) {
+          console.log("Detected return from Spotify authentication");
+          // If there's an error in the URL, log it
+          if (hasAuthError) {
+            console.error("Auth error from Spotify:", urlParams.get('error'));
+          }
+        }
+
+        console.log("Checking for existing session...");
         setLoading(true);
         const { data, error } = await getSession();
-        
+
         if (error) {
           throw error;
         }
-        
-        // Only update state if component is still mounted
+
         if (isMounted.current && data?.session) {
+          console.log("Session found on initial check:", data.session);
           setSession(data.session);
           onLogin?.(data.session);
+        } else {
+          console.log("No session found on initial check");
         }
       } catch (err) {
         console.error('Error checking session:', err);
@@ -105,34 +127,32 @@ const SpotifyAuth = ({ onLogin, onLogout }: SpotifyAuthProps) => {
       }
     };
 
+    // Always check session regardless of the current path
     checkSession();
 
-    // Set up auth state change listener only if not already set up
     if (!authListenerRef.current) {
       const { data: authListener } = onAuthStateChange(
         async (event: AuthChangeEvent, newSession: Session | null) => {
           console.log(`Auth event: ${event}`);
-          
-          // Only update state if component is still mounted
+
           if (isMounted.current) {
             if (event === 'SIGNED_IN' && newSession) {
+              console.log("User signed in with Spotify, session:", newSession);
               setSession(newSession);
               onLogin?.(newSession);
             } else if (event === 'SIGNED_OUT') {
+              console.log("User signed out");
               setSession(null);
               onLogout?.();
             }
-            
-            // Always reset loading state after auth state changes
             setLoading(false);
           }
         }
       );
-      
+
       authListenerRef.current = authListener;
     }
 
-    // Clean up the subscription when the component unmounts
     return () => {
       isMounted.current = false;
       if (authListenerRef.current?.subscription) {
@@ -140,23 +160,23 @@ const SpotifyAuth = ({ onLogin, onLogout }: SpotifyAuthProps) => {
         authListenerRef.current = null;
       }
     };
-  }, []); // Empty dependency array to ensure this only runs once
+  }, [onLogin, onLogout]);
 
   const renderUserInfo = useCallback(() => {
     if (!session) {
       return null;
     }
-    
+
     const user = session.user;
-    
+
     return (
       <div className="user-info">
         <h3>User Information</h3>
         <div className="user-profile">
           {user.user_metadata.avatar_url && (
-            <img 
-              src={user.user_metadata.avatar_url} 
-              alt="Profile" 
+            <img
+              src={user.user_metadata.avatar_url}
+              alt="Profile"
               className="avatar"
             />
           )}
@@ -165,7 +185,7 @@ const SpotifyAuth = ({ onLogin, onLogout }: SpotifyAuthProps) => {
             <p className="user-email">{user.email}</p>
           </div>
         </div>
-        <button 
+        <button
           onClick={handleLogout}
           className="logout-button"
           disabled={loading}
@@ -179,10 +199,10 @@ const SpotifyAuth = ({ onLogin, onLogout }: SpotifyAuthProps) => {
   return (
     <div className="spotify-auth-container">
       {error && <div className="error-message">{error}</div>}
-      
+
       {!session ? (
         <div className="login-container">
-          <button 
+          <button
             onClick={handleSpotifyLogin}
             className="spotify-button"
             disabled={loading}
@@ -197,4 +217,4 @@ const SpotifyAuth = ({ onLogin, onLogout }: SpotifyAuthProps) => {
   );
 };
 
-export default SpotifyAuth; 
+export default SpotifyAuth;

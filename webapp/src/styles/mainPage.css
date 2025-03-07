@@ -1,0 +1,116 @@
+/* --- Root Variables --- */
+:root {
+    --color-background: #1b1b1b; /* matte gray background */
+    --color-font: #ffffff;       /* white font color */
+  }
+  
+  /* --- Global Resets & Layout --- */
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'IntroRustLine', sans-serif;
+    color: var(--color-font);
+    background-color: var(--color-background);
+    overflow: hidden;
+  }
+  
+  #root {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* The wrapper is a flex container for left vs right sections */
+  #wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* --- Left Section (Scrolling Columns) --- */
+  .left-section {
+    width: 50%;        /* Adjust as needed (e.g., 40% or 45%) */
+    margin-left: 5%;  /* push the columns to the right */
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  /* --- Right Section (Title, Slogan, Form, etc.) --- */
+  .right-section {
+    width: 45%;        /* The remainder (so total is 100%) */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* center content vertically */
+    align-items: center;     /* center content horizontally */
+    padding: 2rem;
+  }
+  
+  /* Title & Slogan */
+  .title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .slogan {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* Login Form */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 300px; 
+    margin-bottom: 1rem;
+  }
+  
+  .login-form input {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  /* Button styling */
+  .menu-item {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-decoration: none;       /* remove underline if it's an <a> */
+  }
+  
+  .menu-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  @media (max-width: 768px) {
+    /* Stack them vertically */
+    #wrapper {
+      flex-direction: column;
+    }
+  
+    .left-section,
+    .right-section {
+      width: 100%;
+      min-height: auto;  /* let each section size itself */
+    }
+  
+    .left-section {
+      /* Maybe limit height so the images aren’t huge on mobile */
+      height: 300px; /* or 50vh, adjust to taste */
+      overflow: hidden; 
+    }
+  
+    .right-section {
+      padding: 1rem;
+    }
+  }
+  
